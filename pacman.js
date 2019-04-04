@@ -1,17 +1,17 @@
 // Setup initial game stats
 let score = 0;
 let lives = 2;
-
+let powerPellets = 4
 
 // Define your ghosts here
-const inky = {
+const Inky = {
   menu_option: '1',
   name: 'Inky',
   colour: 'Red',
   character: 'Shadow',
   edible: false
 };
-const blinky = {
+const Blinky = {
   menu_option: '2',
   name: 'Blinky',
   colour: 'Cyan',
@@ -34,7 +34,11 @@ const Clyde = {
 };
 
 // replace this comment with your four ghosts setup as objects
-
+let ghosts = []
+ghosts.push(Inky)
+ghosts.push(Blinky)
+ghosts.push(Pinky)
+ghosts.push(Clyde)
 
 // Draw the screen functionality
 function drawScreen() {
@@ -51,12 +55,18 @@ function clearScreen() {
 }
 
 function displayStats() {
-  console.log(`Score: ${score}     Lives: ${lives}`);
+  console.log(`Score: ${score}  Lives: ${lives}\n\n\nPower Pellets ${powerPellets}` );
 }
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
   console.log('(d) Eat Dot');
+  console.log('(p) Eat Power Pellet')
+  console.log('(1) Eat Inky');
+  console.log('(2) Eat Blinky');
+  console.log('(3) Eat Pinky');
+  console.log('(4) Eat Clyde');
+  console.log('(r) Check Lives')
   console.log('(q) Quit');
 }
 
@@ -83,10 +93,70 @@ function processInput(key) {
     case 'd':
       eatDot();
       break;
+    case 'p':
+      eatPowerPellet();
+      break;
+    case '1':
+      eatsGhost()
+      break;
+    case '2':
+      eatsGhost()
+      break;
+    case '3':
+      eatsGhost()
+      break;
+    case '4':
+      eatsGhost()
+      break;
+    case 'r':
+      death()
+      break;
     default:
       console.log('\nInvalid Command!');
   }
 }
+
+
+//death
+
+function death(){
+  console.log(lives)
+  if (lives <= 0){
+    process.exit()
+  }
+}
+//powerpellet
+function eatPowerPellet(){
+  if (powerPellets <= 0){
+      powerPellets = 0
+      score = score
+      console.log("\n No Power-Pellets Left!" )
+  }else{
+    score += 50
+    powerPellets -= 1
+    ghosts.edible = true
+  }
+}
+
+//nomorepellets
+function noMorePellets(){
+  if (powerPellets == 0){
+
+  }
+}
+
+
+//eats ghosts
+function eatsGhost(){
+    if (ghosts.edible){
+    console.log(`${ghosts['name']}! was just eaten by PacMan :)`)
+    score += 200
+    ghosts.edible = false
+    }else{
+      lives -= 1;
+      console.log(`\n You got killed by ${ghosts['name']} who's color is ${ghosts['colour']}`)
+    }
+  }
 
 
 //
@@ -113,3 +183,4 @@ stdin.on('data', (key) => {
 process.on('exit', () => {
   console.log('\n\nGame Over!\n');
 });
+
